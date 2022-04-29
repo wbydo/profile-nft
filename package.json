@@ -17,7 +17,9 @@
     "compile": "npm run clean && npx -w contract hardhat compile",
     "clean": "npx -w contract hardhat clean",
     "deploy:stg": "npx -w contract hardhat run scripts/deploy.ts --network mumbai",
-    "deploy:prod": "npx -w contract hardhat run scripts/deploy.ts --network mumbai"
+    "deploy:prod": "npx -w contract hardhat run scripts/deploy.ts --network polygon",
+    "mint:stg": "npx -w contract hardhat run scripts/mint.ts --network mumbai",
+    "mint:prod": "npx -w contract hardhat run scripts/mint.ts --network polygon"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
