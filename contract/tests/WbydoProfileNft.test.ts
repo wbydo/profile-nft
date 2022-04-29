@@ -33,7 +33,7 @@ describe('WbydoProfileNft', () => {
       const connectedNft = nft.connect(owner);
       await connectedNft.mint(0);
       expect(await connectedNft.tokenURI(0)).to.be.equal(
-        'https://example.com/metadata/0'
+        'https://example.com/metadata/0.json'
       );
     });
   });
