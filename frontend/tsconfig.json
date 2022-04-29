@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "sourceRoot": "./src",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "strict": true,
+    "jsx": "react",
+    "baseUrl": ".",
+    "types": ["node", "jest"]
+  },
+  "include": ["./tests"],
+  "exclude": ["node_modules"]
+}
