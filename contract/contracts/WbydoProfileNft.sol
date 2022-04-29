@@ -21,7 +21,6 @@ contract WbydoProfileNft is ERC721Enumerable, Ownable {
     function tokenURI(uint256 tokenId)
         public
         view
-        virtual
         override
         returns (string memory)
     {
