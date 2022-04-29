@@ -1,29 +1,28 @@
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { waffle, ethers } from 'hardhat';
 
 import { BigNumber } from 'ethers';
 
-import { loadFixture } from 'ethereum-waffle';
+const { loadFixture } = waffle;
 
-// MEMO:
-// const signers = await ethers.getSigners();
-
-const fixture = async () => {
-  const [owner, other] = await ethers.getSigners();
-
-  const nft = await ethers
-    .getContractFactory('WbydoProfileNft')
-    .then((factory) => {
-      return factory.deploy();
-    })
-    .then((contracts) => {
-      return contracts.deployed();
-    });
-
-  return { owner, nft, other };
-};
+const baseURI = 'https://example.com/metadata/';
 
 describe('WbydoProfileNft', () => {
+  const fixture = async () => {
+    const [owner, other] = await ethers.getSigners();
+
+    const nft = await ethers
+      .getContractFactory('WbydoProfileNft')
+      .then((factory) => {
+        return factory.deploy(baseURI);
+      })
+      .then((contracts) => {
+        return contracts.deployed();
+      });
+
+    return { owner, nft, other };
+  };
+
   it('deploy', async () => {
     await loadFixture(fixture);
   });
@@ -36,13 +35,15 @@ describe('WbydoProfileNft', () => {
       ).to.be.revertedWith('Ownable: caller is not the owner');
     });
 
-    // TODO:
-    // it('', async () => {
-    //   const { nft, owner } = await loadFixture(fixture);
-    //   const connectedNft = nft.connect(owner);
-    //   connectedNft.setTokenURI(0, 'asdf');
-    //   expect(await connectedNft.tokenURI(0)).to.be('hoge');
-    // });
+    it('tokenURIが期待通りであること', async () => {
+      const { nft, owner } = await loadFixture(fixture);
+      const connectedNft = nft.connect(owner);
+      await connectedNft.mint(0);
+      await connectedNft.setTokenURI(0, '0.json');
+      expect(await connectedNft.tokenURI(0)).to.be.equal(
+        'https://example.com/metadata/0.json'
+      );
+    });
   });
 
   describe('mint', async () => {

@@ -6,7 +6,14 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract WbydoProfileNft is ERC721Enumerable, ERC721URIStorage, Ownable {
-    constructor() ERC721("wbydo Profile Token", "wbydo") Ownable() {}
+    string private _BASE_URI;
+
+    constructor(string memory __baseURI)
+        ERC721("wbydo Profile Token", "wbydo")
+        Ownable()
+    {
+        _BASE_URI = __baseURI;
+    }
 
     function _beforeTokenTransfer(
         address from,
@@ -44,8 +51,8 @@ contract WbydoProfileNft is ERC721Enumerable, ERC721URIStorage, Ownable {
         return super.tokenURI(tokenId);
     }
 
-    function _baseURI() internal pure override(ERC721) returns (string memory) {
-        return "https://wbydo.github.io/profile-nft/metadata/";
+    function _baseURI() internal view override(ERC721) returns (string memory) {
+        return _BASE_URI;
     }
 
     function setTokenURI(uint256 tokenId, string memory _tokenURI)
