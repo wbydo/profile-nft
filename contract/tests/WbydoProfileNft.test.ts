@@ -27,21 +27,13 @@ describe('WbydoProfileNft', () => {
     await loadFixture(fixture);
   });
 
-  describe('setTokenURI', async () => {
-    it('owner以外が実行するとrevertすること', async () => {
-      const { nft, other } = await loadFixture(fixture);
-      await expect(
-        nft.connect(other).setTokenURI(0, 'asdf')
-      ).to.be.revertedWith('Ownable: caller is not the owner');
-    });
-
+  describe('TokenURI', async () => {
     it('tokenURIが期待通りであること', async () => {
       const { nft, owner } = await loadFixture(fixture);
       const connectedNft = nft.connect(owner);
       await connectedNft.mint(0);
-      await connectedNft.setTokenURI(0, '0.json');
       expect(await connectedNft.tokenURI(0)).to.be.equal(
-        'https://example.com/metadata/0.json'
+        'https://example.com/metadata/0'
       );
     });
   });
