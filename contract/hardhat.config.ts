@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv';
-
 import { HardhatUserConfig } from 'hardhat/config';
 
 import '@nomiclabs/hardhat-waffle';
@@ -9,7 +7,32 @@ import '@typechain/hardhat';
 
 import 'hardhat-watcher';
 
-dotenv.config();
+const MUMBAI_URL =
+  process.env.NODE_ENV !== 'test' ? process.env.MUMBAI_URL : '';
+if (MUMBAI_URL == null) {
+  throw new Error('MUMBAI_URL is empty');
+}
+
+const POLYGON_URL =
+  process.env.NODE_ENV !== 'test' ? process.env.POLYGON_URL : '';
+if (POLYGON_URL == null) {
+  throw new Error('POLYGON_URL is empty');
+}
+
+const testKey =
+  'aaaabbbbccccddddaaaabbbbccccddddaaaabbbbccccddddaaaabbbbccccdddd';
+
+const PRIVATE_KEY_STG =
+  process.env.NODE_ENV !== 'test' ? process.env.PRIVATE_KEY_STG : testKey;
+if (PRIVATE_KEY_STG == null || PRIVATE_KEY_STG === '') {
+  throw new Error('PRIVATE_KEY_STG is empty');
+}
+
+const PRIVATE_KEY_PROD =
+  process.env.NODE_ENV !== 'test' ? process.env.PRIVATE_KEY_PROD : testKey;
+if (PRIVATE_KEY_PROD == null || PRIVATE_KEY_PROD === '') {
+  throw new Error('PRIVATE_KEY_PROD is empty');
+}
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -31,12 +54,13 @@ const config: HardhatUserConfig = {
 
   networks: {
     hardhat: {},
-    sampleChain: {
-      url: '',
-      chainId: 999999999999,
-      accounts: [
-        'aaaabbbbccccddddaaaabbbbccccddddaaaabbbbccccddddaaaabbbbccccdddd',
-      ],
+    mumbai: {
+      url: MUMBAI_URL,
+      accounts: [PRIVATE_KEY_STG],
+    },
+    polygon: {
+      url: POLYGON_URL,
+      accounts: [PRIVATE_KEY_PROD],
     },
   },
 
