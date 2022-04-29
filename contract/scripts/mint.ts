@@ -1,4 +1,5 @@
 import { ethers, network } from 'hardhat';
+import { BigNumber } from 'ethers';
 
 const chainName = network.name;
 if (chainName !== 'mumbai' && chainName !== 'polygon') {
@@ -25,14 +26,25 @@ if (MINT_ID == null || MINT_ID === '') {
   throw new Error('MINT_ID is empty.');
 }
 
+const gasPrice =
+  process.env.GAS_PRICE != null && process.env.GAS_PRICE !== ''
+    ? process.env.GAS_PRICE
+    : '50';
+
 const main = async () => {
   const nft = (await ethers.getContractFactory('WbydoProfileNft')).attach(
     NFT_ADDRESS
   );
 
-  const receipt = await nft.mint(MINT_ID).catch((err: unknown) => {
-    throw new Error(`${err}`);
-  });
+  const receipt = await nft
+    .mint(MINT_ID, {
+      gasPrice: ethers.utils.parseUnits(gasPrice, 'gwei'),
+      type: 0,
+      gasLimit: BigNumber.from('150000'),
+    })
+    .catch((err: unknown) => {
+      throw new Error(`${err}`);
+    });
   console.log({ receipt });
 };
 

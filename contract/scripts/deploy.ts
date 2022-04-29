@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers';
 import { ethers, network } from 'hardhat';
 
 const chainName = network.name;
@@ -15,6 +16,11 @@ if (BASE_URI_PROD == null || BASE_URI_PROD === '') {
   throw new Error('BASE_URI_STG is empty.');
 }
 
+const gasPrice =
+  process.env.GAS_PRICE != null && process.env.GAS_PRICE !== ''
+    ? process.env.GAS_PRICE
+    : '50';
+
 const baseURI = (() => {
   if (chainName === 'mumbai') {
     return BASE_URI_STG;
@@ -27,7 +33,11 @@ const main = async () => {
   const contract = await ethers
     .getContractFactory('WbydoProfileNft')
     .then((factory) => {
-      return factory.deploy(baseURI);
+      return factory.deploy(baseURI, {
+        gasPrice: ethers.utils.parseUnits(gasPrice, 'gwei'),
+        type: 0,
+        gasLimit: BigNumber.from('1900000'),
+      });
     })
     .then((contract) => {
       return contract.deployed();
