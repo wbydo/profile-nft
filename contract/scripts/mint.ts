@@ -15,26 +15,25 @@ if (BASE_URI_PROD == null || BASE_URI_PROD === '') {
   throw new Error('BASE_URI_STG is empty.');
 }
 
-const baseURI = (() => {
-  if (chainName === 'mumbai') {
-    return BASE_URI_STG;
-  } else {
-    return BASE_URI_PROD;
-  }
-})();
+const NFT_ADDRESS = process.env.NFT_ADDRESS;
+if (NFT_ADDRESS == null || NFT_ADDRESS === '') {
+  throw new Error('NFT_ADDRESS is empty.');
+}
+
+const MINT_ID = process.env.MINT_ID;
+if (MINT_ID == null || MINT_ID === '') {
+  throw new Error('MINT_ID is empty.');
+}
 
 const main = async () => {
-  const contract = await ethers
-    .getContractFactory('WbydoProfileNft')
-    .then((factory) => {
-      return factory.deploy(baseURI);
-    })
-    .then((contract) => {
-      return contract.deployed();
-    });
-  const { address, deployTransaction } = contract;
-  const { hash } = deployTransaction;
-  console.log({ address, hash });
+  const nft = (await ethers.getContractFactory('WbydoProfileNft')).attach(
+    NFT_ADDRESS
+  );
+
+  const receipt = await nft.mint(MINT_ID).catch((err: unknown) => {
+    throw new Error(`${err}`);
+  });
+  console.log({ receipt });
 };
 
 main().catch((error: unknown) => {
