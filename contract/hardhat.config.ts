@@ -17,12 +17,17 @@ if (POLYGON_URL == null || POLYGON_URL === '') {
   throw new Error('POLYGON_URL is empty');
 }
 
-const PRIVATE_KEY_STG = process.env.PRIVATE_KEY_STG;
+const testKey =
+  'aaaabbbbccccddddaaaabbbbccccddddaaaabbbbccccddddaaaabbbbccccdddd';
+
+const PRIVATE_KEY_STG =
+  process.env.NODE_ENV !== 'test' ? process.env.PRIVATE_KEY_STG : testKey;
 if (PRIVATE_KEY_STG == null || PRIVATE_KEY_STG === '') {
   throw new Error('PRIVATE_KEY_STG is empty');
 }
 
-const PRIVATE_KEY_PROD = process.env.PRIVATE_KEY_PROD;
+const PRIVATE_KEY_PROD =
+  process.env.NODE_ENV !== 'test' ? process.env.PRIVATE_KEY_PROD : testKey;
 if (PRIVATE_KEY_PROD == null || PRIVATE_KEY_PROD === '') {
   throw new Error('PRIVATE_KEY_PROD is empty');
 }
