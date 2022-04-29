@@ -7,13 +7,15 @@ import '@typechain/hardhat';
 
 import 'hardhat-watcher';
 
-const MUMBAI_URL = process.env.MUMBAI_URL;
-if (MUMBAI_URL == null || MUMBAI_URL === '') {
+const MUMBAI_URL =
+  process.env.NODE_ENV !== 'test' ? process.env.MUMBAI_URL : '';
+if (MUMBAI_URL == null) {
   throw new Error('MUMBAI_URL is empty');
 }
 
-const POLYGON_URL = process.env.POLYGON_URL;
-if (POLYGON_URL == null || POLYGON_URL === '') {
+const POLYGON_URL =
+  process.env.NODE_ENV !== 'test' ? process.env.POLYGON_URL : '';
+if (POLYGON_URL == null) {
   throw new Error('POLYGON_URL is empty');
 }
 

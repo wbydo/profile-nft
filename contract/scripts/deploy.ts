@@ -35,18 +35,18 @@ const main = async () => {
   const { address, deployTransaction } = contract;
   console.log({ address, deployTransaction });
 
-  const receipt0 = await contract.mint(0).catch((err) => {
-    throw new Error(err);
+  const receipt0 = await contract.mint(0).catch((err: unknown) => {
+    throw new Error(`${err}`);
   });
   console.log({ receipt0 });
 
-  const receipt1 = await contract.mint(1).catch((err) => {
-    throw new Error(err);
+  const receipt1 = await contract.mint(1).catch((err: unknown) => {
+    throw new Error(`${err}`);
   });
   console.log({ receipt1 });
 };
 
-main().catch((error) => {
-  console.error(error);
+main().catch((error: unknown) => {
+  console.error(`${error}`);
   process.exit(1);
 });
