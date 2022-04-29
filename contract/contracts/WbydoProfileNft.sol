@@ -54,4 +54,8 @@ contract WbydoProfileNft is ERC721Enumerable, ERC721URIStorage, Ownable {
     {
         _setTokenURI(tokenId, _tokenURI);
     }
+
+    function mint(uint256 tokenId) public onlyOwner {
+        _safeMint(_msgSender(), tokenId);
+    }
 }
