@@ -9,6 +9,8 @@ import { loadFixture } from 'ethereum-waffle';
 // const signers = await ethers.getSigners();
 
 const fixture = async () => {
+  const [owner, other] = await ethers.getSigners();
+
   const nft = await ethers
     .getContractFactory('WbydoProfileNft')
     .then((factory) => {
@@ -18,11 +20,28 @@ const fixture = async () => {
       return contracts.deployed();
     });
 
-  return { nft };
+  return { owner, nft, other };
 };
 
 describe('WbydoProfileNft', () => {
   it('deploy', async () => {
-    const { nft } = await loadFixture(fixture);
+    await loadFixture(fixture);
+  });
+
+  describe('setTokenURI', async () => {
+    it('owner以外が実行するとrevertすること', async () => {
+      const { nft, other } = await loadFixture(fixture);
+      await expect(
+        nft.connect(other).setTokenURI(0, 'asdf')
+      ).to.be.revertedWith('Ownable: caller is not the owner');
+    });
+
+    // TODO:
+    it('', async () => {
+      const { nft, owner } = await loadFixture(fixture);
+      const connectedNft = nft.connect(owner);
+      connectedNft.setTokenURI(0, 'asdf');
+      expect(await connectedNft.tokenURI(0)).to.be('hoge');
+    });
   });
 });
