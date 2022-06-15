@@ -36,7 +36,7 @@
     "npm-check-updates": "^12.5.11",
     "prettier": "^2.6.2",
     "react": "^18.0.0",
-    "react-dom": "^18.1.0",
+    "react-dom": "^18.2.0",
     "storybook-builder-vite": "^0.1.23",
     "ts-jest": "^27.1.4",
     "ts-node": "^10.8.1",
