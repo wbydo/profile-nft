@@ -8,8 +8,8 @@
     "strict": true,
     "jsx": "react",
     "baseUrl": ".",
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "esModuleInterop": true
   },
-  "include": ["./tests"],
-  "exclude": ["node_modules"]
+  "include": ["./tests", "./src", "./vite.config.ts", "./.eslintrc.js"]
 }
