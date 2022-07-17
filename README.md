@@ -1,1 +1,1 @@
-# profile-nft
+# template-contract

@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "sourceRoot": "./src",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "strict": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": { "@/frontend/*": ["../frontend/src/*"] },
+    "types": ["node", "jest"]
+  },
+  "include": ["./tests"],
+  "exclude": ["node_modules"],
+  "references": [{ "path": "../frontend" }]
+}

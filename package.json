@@ -1,28 +1,15 @@
 {
-  "name": "template-contract",
+  "name": "wbydo-blockchain-project",
   "private": true,
   "workspaces": [
-    "frontend",
-    "storybook",
-    "contract"
+    "./packages/*"
   ],
   "scripts": {
-    "dev": "npm run -w frontend dev --",
-    "storybook": "npm run -w frontend storybook --",
-    "build": "npm run -w frontend build --",
-    "serve": "npm run -w frontend serve --",
-    "test:frontend": "npm -w frontend test",
-    "test:contract": "cross-env NODE_ENV=\"test\" npm -w contract test",
-    "test": "run-s -c test:*",
-    "compile": "npm run clean && npx -w contract hardhat compile",
-    "clean": "npx -w contract hardhat clean",
-    "deploy:stg": "npx -w contract hardhat run scripts/deploy.ts --network mumbai",
-    "deploy:prod": "npx -w contract hardhat run scripts/deploy.ts --network polygon",
-    "mint:stg": "npx -w contract hardhat run scripts/mint.ts --network mumbai",
-    "mint:prod": "npx -w contract hardhat run scripts/mint.ts --network polygon"
+    "compile": "lerna run compile --scope=contract",
+    "test": "lerna run test --scope=@wbydo-blockchain-project/contracts"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
+    "lerna": "^5.1.8",
     "npm-run-all": "^4.1.5"
   }
 }
