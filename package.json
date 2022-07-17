@@ -1,19 +1,12 @@
 {
   "name": "template-contract",
   "private": true,
-  "packageManager": "yarn@1.22.15",
   "workspaces": [
     "./packages/*"
   ],
   "scripts": {
-    "dev": "npm run -w frontend dev --",
-    "storybook": "npm run -w storybook storybook --",
-    "build": "npm run -w frontend build --",
-    "serve": "npm run -w frontend serve --",
-    "test:frontend": "npm -w frontend test",
-    "test:storybook": "npm -w storybook test",
-    "test:contract": "npm -w contract test",
-    "test": "run-s -c test:*"
+    "compile": "lerna run compile --scope=contract",
+    "test": "lerna run test --scope=@template-contract/contract"
   },
   "devDependencies": {
     "lerna": "^5.1.8",
