@@ -1,12 +1,12 @@
 {
-  "name": "template-contract",
+  "name": "wbydo-blockchain-project",
   "private": true,
   "workspaces": [
     "./packages/*"
   ],
   "scripts": {
     "compile": "lerna run compile --scope=contract",
-    "test": "lerna run test --scope=@template-contract/contract"
+    "test": "lerna run test --scope=@wbydo-blockchain-project/contracts"
   },
   "devDependencies": {
     "lerna": "^5.1.8",

@@ -7,7 +7,6 @@
     "outDir": "./dist",
     "strict": true,
     "jsx": "react",
-    "composite": true,
     "baseUrl": ".",
     "types": ["node", "jest"]
   },
