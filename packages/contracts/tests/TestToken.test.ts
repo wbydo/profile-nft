@@ -3,7 +3,7 @@ import { ethers } from 'hardhat';
 
 import { BigNumber } from 'ethers';
 
-import { loadFixture } from 'ethereum-waffle';
+import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 
 // MEMO:
 // const signers = await ethers.getSigners();
