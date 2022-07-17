@@ -1,23 +1,53 @@
-import { ethers } from "hardhat";
+import { BigNumber } from 'ethers';
+import { ethers, network } from 'hardhat';
 
-async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
-
-  const lockedAmount = ethers.utils.parseEther("1");
-
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
-  console.log("Lock with 1 ETH deployed to:", lock.address);
+const chainName = network.name;
+if (chainName !== 'mumbai' && chainName !== 'polygon') {
+  throw new Error(`chainName: ${chainName}`);
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+const BASE_URI_STG = process.env.BASE_URI_STG;
+if (BASE_URI_STG == null || BASE_URI_STG === '') {
+  throw new Error('BASE_URI_STG is empty.');
+}
+
+const BASE_URI_PROD = process.env.BASE_URI_PROD;
+if (BASE_URI_PROD == null || BASE_URI_PROD === '') {
+  throw new Error('BASE_URI_STG is empty.');
+}
+
+const gasPrice =
+  process.env.GAS_PRICE != null && process.env.GAS_PRICE !== ''
+    ? process.env.GAS_PRICE
+    : '50';
+
+const baseURI = (() => {
+  if (chainName === 'mumbai') {
+    return BASE_URI_STG;
+  } else {
+    return BASE_URI_PROD;
+  }
+})();
+
+const main = async () => {
+  const contract = await ethers
+    .getContractFactory('WbydoProfileNft')
+    .then((factory) => {
+      return factory.deploy(baseURI, {
+        gasPrice: ethers.utils.parseUnits(gasPrice, 'gwei'),
+        type: 0,
+        gasLimit: BigNumber.from('1900000'),
+      });
+    })
+    .then((contract) => {
+      return contract.deployed();
+    });
+  const { address, deployTransaction } = contract;
+  const { hash } = deployTransaction;
+  console.log({ address, hash });
+};
+
+main().catch((error: unknown) => {
+  console.error(`${error}`);
+  process.exit(1);
 });
