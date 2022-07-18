@@ -7,9 +7,9 @@
     "outDir": "./dist",
     "strict": true,
     "jsx": "react",
+    "esModuleInterop": true,
     "baseUrl": ".",
-    "types": ["node", "jest"]
+    "paths": { "@/frontend/*": ["../frontend/src/*"] }
   },
-  "include": ["./tests"],
-  "exclude": ["node_modules"]
+  "exclude": ["**/*.test.ts", "**/*.example.ts", "<rootDir>/../*.ts"]
 }

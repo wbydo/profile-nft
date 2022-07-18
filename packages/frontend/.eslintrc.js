@@ -8,9 +8,9 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'prettier',
     'plugin:react/recommended',
     'plugin:storybook/recommended',
+    'prettier',
   ],
   globals: {
     Atomics: 'readonly',

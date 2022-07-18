@@ -8,7 +8,7 @@ module.exports = {
       tsconfig: './tsconfig.json',
     },
   },
-  testMatch: ['./tests/**/*.test.ts'],
+  testMatch: ['**/tests/**/*.test.ts'],
   moduleNameMapper: {
     '^@mod/(.*)$': ['<rootDir>/src/$1'],
   },
