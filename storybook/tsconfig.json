@@ -7,12 +7,9 @@
     "outDir": "./dist",
     "strict": true,
     "jsx": "react",
-    "esModuleInterop": true,
     "baseUrl": ".",
-    "paths": { "@/frontend/*": ["../frontend/src/*"] },
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "esModuleInterop": true
   },
-  "include": ["./tests"],
-  "exclude": ["node_modules"],
-  "references": [{ "path": "../frontend" }]
+  "include": ["./tests", "./src", "./vite.config.ts", "./.eslintrc.js"]
 }
