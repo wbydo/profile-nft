@@ -1,25 +1,87 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { createRoot } from 'react-dom/client';
+import {
+  WagmiConfig,
+  createClient,
+  useNetwork,
+  useAccount,
+  chain,
+} from 'wagmi';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import { getDefaultProvider } from 'ethers';
 
-import { providers } from 'ethers';
-import { Web3ReactProvider } from '@web3-react/core';
-import { InjectedConnector } from '@web3-react/injected-connector';
-export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42],
-});
+import { useConnect } from 'wagmi';
 
 import { Top } from './components/pages/Top';
 
 import './main.css';
 
-const getLibrary = (provider: providers.ExternalProvider) => {
-  return new providers.Web3Provider(provider);
+const client = createClient({
+  autoConnect: false,
+  provider: getDefaultProvider(),
+});
+
+const chains = [
+  // chain.mainnet,
+  chain.rinkeby,
+  chain.goerli,
+  // chain.polygon,
+  chain.polygonMumbai,
+];
+
+const Connected = ({
+  status,
+  connect,
+  chain,
+}: {
+  status: {
+    connect: 'error' | 'success' | 'idle' | 'loading';
+    account: 'connecting' | 'disconnected' | 'connected' | 'reconnecting';
+  };
+  connect: ReturnType<typeof useConnect>['connect'];
+  chain: ReturnType<typeof useNetwork>['chain'];
+}) => {
+  if (status.connect === 'idle' || status.account === 'disconnected') {
+    return <button {...{ onClick: () => connect() }}>connect</button>;
+  }
+
+  if (chain?.unsupported) {
+    return <b>Wrong Network</b>;
+  }
+
+  return (
+    <>
+      connected: {{ error: '🚫', success: '✅', loading: '🔄' }[status.connect]}
+    </>
+  );
 };
 
-const App: FC = () => (
-  <Web3ReactProvider {...{ getLibrary, children: <Top /> }} />
-);
+const App: FC = () => {
+  const { connect, status: statusConnect } = useConnect({
+    connector: new MetaMaskConnector({
+      chains,
+    }),
+  });
+  const { address, status: statusAccount } = useAccount();
+
+  const { chain } = useNetwork();
+
+  return (
+    <>
+      <Connected
+        {...{
+          status: { account: statusAccount, connect: statusConnect },
+          connect,
+          chain,
+        }}
+      />
+      <p>chain: {JSON.stringify(chain)}</p>
+      <p>address: {address}</p>
+      <p>accountStatus: {statusAccount}</p>
+    </>
+  );
+};
 
 const container = document.getElementById('root');
 const root = container != null ? createRoot(container) : null;
@@ -27,7 +89,9 @@ const root = container != null ? createRoot(container) : null;
 if (root != null) {
   root.render(
     <React.StrictMode>
-      <App />
+      <WagmiConfig client={client}>
+        <App />
+      </WagmiConfig>
     </React.StrictMode>
   );
 }
