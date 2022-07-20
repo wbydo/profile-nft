@@ -1,14 +1,14 @@
 {
-  "name": "wbydo-blockchain-project",
+  "name": "profile-nft",
   "private": true,
   "workspaces": [
     "./packages/*"
   ],
   "scripts": {
-    "compile": "lerna run compile --scope=@wbydo-blockchain-project/contracts",
-    "test": "lerna run test --scope=@wbydo-blockchain-project/contracts",
-    "dev": "lerna run dev --scope=@wbydo-blockchain-project/frontend --stream",
-    "storybook": "lerna run storybook --scope=@wbydo-blockchain-project/frontend --stream"
+    "compile": "lerna run compile --scope=@wbydo/profile-nft-contracts",
+    "test": "lerna run test --scope=@wbydo/profile-nft-contracts",
+    "dev": "lerna run dev --scope=@wbydo/profile-nft-frontend --stream",
+    "storybook": "lerna run storybook --scope=@wbydo/profile-nft-frontend --stream"
   },
   "devDependencies": {
     "lerna": "^5.1.8",

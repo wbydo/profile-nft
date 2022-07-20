@@ -11,6 +11,8 @@ import {
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { getDefaultProvider } from 'ethers';
 
+import { WbydoProfileNft__factory } from '@wbydo/profile-nft-contracts/';
+
 import { useConnect } from 'wagmi';
 
 import { Top } from './components/pages/Top';
