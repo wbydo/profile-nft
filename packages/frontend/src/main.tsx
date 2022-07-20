@@ -69,6 +69,9 @@ const App: FC = () => {
 
   return (
     <>
+      <h1>Deploy Tool</h1>
+
+      <h2>Info</h2>
       <Connected
         {...{
           status: { account: statusAccount, connect: statusConnect },
@@ -76,9 +79,12 @@ const App: FC = () => {
           chain,
         }}
       />
-      <p>chain: {JSON.stringify(chain)}</p>
-      <p>address: {address}</p>
-      <p>accountStatus: {statusAccount}</p>
+
+      <p>chain: {chain?.name}</p>
+      <p>chainId: {chain?.id}</p>
+      <p>supported: {chain == null ? '❓' : chain.unsupported ? '🚫' : '✅'}</p>
+
+      <hr />
     </>
   );
 };
