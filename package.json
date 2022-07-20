@@ -7,7 +7,8 @@
   "scripts": {
     "compile": "lerna run compile --scope=@wbydo/profile-nft-contracts",
     "test": "lerna run test --scope=@wbydo/profile-nft-contracts",
-    "dev": "lerna run dev --scope=@wbydo/profile-nft-frontend --stream",
+    "node": "lerna run node --scope=@wbydo/profile-nft-contracts --stream",
+    "dev": "lerna run dev --stream --parallel",
     "storybook": "lerna run storybook --scope=@wbydo/profile-nft-frontend --stream"
   },
   "devDependencies": {

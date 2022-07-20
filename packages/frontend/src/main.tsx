@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   WagmiConfig,
@@ -7,6 +7,7 @@ import {
   useNetwork,
   useAccount,
   chain,
+  useSigner,
 } from 'wagmi';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { getDefaultProvider } from 'ethers';
@@ -30,6 +31,7 @@ const chains = [
   chain.goerli,
   // chain.polygon,
   chain.polygonMumbai,
+  chain.hardhat,
 ];
 
 const Connected = ({
@@ -59,6 +61,71 @@ const Connected = ({
   );
 };
 
+const Deploy = ({
+  status,
+  chain,
+}: {
+  status: {
+    connect: 'error' | 'success' | 'idle' | 'loading';
+    account: 'connecting' | 'disconnected' | 'connected' | 'reconnecting';
+  };
+  chain: ReturnType<typeof useNetwork>['chain'];
+}) => {
+  const { data: signer } = useSigner();
+  const [baseUri, setBaseUri] = useState<string | null>(null);
+  const [txHath, setTxHash] = useState<string | null>(null);
+  const [contractAddress, setContractAddress] = useState<string | null>(null);
+
+  if (signer == null) {
+    return <></>;
+  }
+
+  if (
+    status.connect !== 'success' ||
+    status.account !== 'connected' ||
+    chain?.unsupported !== false
+  ) {
+    return <>🔄</>;
+  }
+
+  if (txHath != null) {
+    return (
+      <>
+        <p>txHash: {txHath}</p>
+        <p>contractAddress: {contractAddress ?? '🔄'}</p>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <input
+        type="text"
+        size={50}
+        onChange={(e) => setBaseUri(e.target.value)}
+      ></input>
+      <button
+        onClick={() => {
+          (async () => {
+            if (baseUri == null) {
+              alert('baseUri is null');
+              return;
+            }
+            const contract = await new WbydoProfileNft__factory(signer).deploy(
+              baseUri
+            );
+            setTxHash(contract.deployTransaction.hash);
+            await contract.deployed();
+            setContractAddress(contract.address);
+          })().catch((e) => console.error(e));
+        }}
+      >
+        deploy
+      </button>
+    </>
+  );
+};
+
 const App: FC = () => {
   const { connect, status: statusConnect } = useConnect({
     connector: new MetaMaskConnector({
@@ -66,8 +133,8 @@ const App: FC = () => {
     }),
   });
   const { address, status: statusAccount } = useAccount();
-
   const { chain } = useNetwork();
+  const status = { account: statusAccount, connect: statusConnect };
 
   return (
     <>
@@ -76,7 +143,7 @@ const App: FC = () => {
       <h2>Info</h2>
       <Connected
         {...{
-          status: { account: statusAccount, connect: statusConnect },
+          status,
           connect,
           chain,
         }}
@@ -84,9 +151,14 @@ const App: FC = () => {
 
       <p>chain: {chain?.name}</p>
       <p>chainId: {chain?.id}</p>
-      <p>supported: {chain == null ? '❓' : chain.unsupported ? '🚫' : '✅'}</p>
 
-      <hr />
+      <h2>Deploy</h2>
+      <Deploy
+        {...{
+          status,
+          chain,
+        }}
+      />
     </>
   );
 };
