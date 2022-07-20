@@ -1,5 +1,5 @@
 {
-  "name": "@wbydo-blockchain-project/frontend",
+  "name": "@wbydo/profile-nft-frontend",
   "private": true,
   "scripts": {
     "test": "jest",
@@ -39,5 +39,8 @@
     "typescript": "^4.6.3",
     "vite": "^3.0.2",
     "wagmi": "^0.5.9"
+  },
+  "dependencies": {
+    "@wbydo/profile-nft-contracts": "^2.0.0-alpha"
   }
 }
