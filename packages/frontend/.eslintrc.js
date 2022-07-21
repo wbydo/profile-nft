@@ -9,7 +9,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:react/recommended',
-    'plugin:storybook/recommended',
+    // 'plugin:storybook/recommended',
     'prettier',
   ],
   globals: {
