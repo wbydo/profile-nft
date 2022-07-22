@@ -2,6 +2,8 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 import { useNetwork, useConnect, useSigner } from 'wagmi';
 
+import { WbydoProfileNft__factory } from '@wbydo/profile-nft-contracts/';
+
 import { Status } from '../types';
 
 export const Section = ({
@@ -98,9 +100,29 @@ export const MintButton = ({
 }: {
   contractAddress: string | null;
 }) => {
+  const { data: signer } = useSigner();
+  const mintHandler = React.useCallback(
+    (tokenId: number) => {
+      if (signer == null) return;
+      if (contractAddress == null) return;
+      const contract = new WbydoProfileNft__factory(signer).attach(
+        contractAddress
+      );
+      (async () => {
+        await contract.mint(tokenId);
+      })().catch((e) => console.error(e));
+    },
+    [contractAddress, signer]
+  );
+
   if (contractAddress == null) {
     return <p>until not deployed.</p>;
   }
 
-  return <></>;
+  return (
+    <>
+      <button onClick={() => mintHandler(0)}>Mint ID: 0</button>
+      <button onClick={() => mintHandler(1)}>Mint ID: 1</button>
+    </>
+  );
 };
