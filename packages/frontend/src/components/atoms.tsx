@@ -92,3 +92,15 @@ export const DeployButton = ({
     </>
   );
 };
+
+export const MintButton = ({
+  contractAddress,
+}: {
+  contractAddress: string | null;
+}) => {
+  if (contractAddress == null) {
+    return <p>until not deployed.</p>;
+  }
+
+  return <></>;
+};

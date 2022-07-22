@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useNetwork, useConnect } from 'wagmi';
 
-import { Section, Connected } from './atoms';
+import { Section, Connected, MintButton } from './atoms';
 import { DeployButton } from '../containers';
 import { Status } from '../types';
 
@@ -36,9 +36,13 @@ export const Info = ({
 export const Deploy = ({
   status,
   chain,
+  contractAddress,
+  setContractAddress,
 }: {
   status: Status;
   chain: ReturnType<typeof useNetwork>['chain'];
+  contractAddress: string | null;
+  setContractAddress: (arg: string | null) => void;
 }) => {
   return (
     <Section {...{ title: 'Deploy' }}>
@@ -46,8 +50,22 @@ export const Deploy = ({
         {...{
           status,
           chain,
+          contractAddress,
+          setContractAddress,
         }}
       />
+    </Section>
+  );
+};
+
+export const Mint = ({
+  contractAddress,
+}: {
+  contractAddress: string | null;
+}) => {
+  return (
+    <Section {...{ title: 'Mint' }}>
+      <MintButton {...{ contractAddress }} />
     </Section>
   );
 };
