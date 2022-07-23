@@ -97,32 +97,20 @@ export const DeployButton = ({
 
 export const MintButton = ({
   contractAddress,
+  tokenId,
+  mintHandler,
 }: {
   contractAddress: string | null;
+  tokenId: number;
+  mintHandler: () => void;
 }) => {
-  const { data: signer } = useSigner();
-  const mintHandler = React.useCallback(
-    (tokenId: number) => {
-      if (signer == null) return;
-      if (contractAddress == null) return;
-      const contract = new WbydoProfileNft__factory(signer).attach(
-        contractAddress
-      );
-      (async () => {
-        await contract.mint(tokenId);
-      })().catch((e) => console.error(e));
-    },
-    [contractAddress, signer]
-  );
-
   if (contractAddress == null) {
-    return <p>until not deployed.</p>;
+    return <></>;
   }
 
   return (
     <>
-      <button onClick={() => mintHandler(0)}>Mint ID: 0</button>
-      <button onClick={() => mintHandler(1)}>Mint ID: 1</button>
+      <button onClick={mintHandler}>Mint ID: {tokenId}</button>
     </>
   );
 };

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useNetwork, useConnect } from 'wagmi';
 
-import { Section, Connected, MintButton } from './atoms';
-import { DeployButton } from '../containers';
+import { Section, Connected } from './atoms';
+import { DeployButton, MintButton } from '../containers';
 import { Status } from '../types';
 
 export const Info = ({
@@ -65,7 +65,8 @@ export const Mint = ({
 }) => {
   return (
     <Section {...{ title: 'Mint' }}>
-      <MintButton {...{ contractAddress }} />
+      <MintButton {...{ contractAddress, tokenId: 0 }} />
+      <MintButton {...{ contractAddress, tokenId: 1 }} />
     </Section>
   );
 };

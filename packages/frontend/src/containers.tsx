@@ -4,7 +4,10 @@ import { useNetwork, useSigner } from 'wagmi';
 
 import { WbydoProfileNft__factory } from '@wbydo/profile-nft-contracts/';
 
-import { DeployButton as DeployButtonComponent } from './components/atoms';
+import {
+  DeployButton as DeployButtonComponent,
+  MintButton as MintButtonComponent,
+} from './components/atoms';
 import { Status } from './types';
 
 const useDeployButton = (setContractAddress: (arg: string | null) => void) => {
@@ -62,4 +65,29 @@ export const DeployButton = ({
       }}
     />
   );
+};
+
+export const MintButton = ({
+  contractAddress,
+  tokenId,
+}: {
+  contractAddress: string | null;
+  tokenId: number;
+}) => {
+  const { data: signer } = useSigner();
+  const [txHash, setTxHash] = useState<string | null>();
+
+  const mintHandler = React.useCallback(() => {
+    if (signer == null) return;
+    if (contractAddress == null) return;
+    const contract = new WbydoProfileNft__factory(signer).attach(
+      contractAddress
+    );
+    (async () => {
+      const receipt = await contract.mint(tokenId);
+      setTxHash(receipt.blockHash);
+    })().catch((e) => console.error(e));
+  }, [contractAddress, signer, tokenId]);
+
+  return <MintButtonComponent {...{ contractAddress, tokenId, mintHandler }} />;
 };
