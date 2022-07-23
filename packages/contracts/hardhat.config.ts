@@ -16,6 +16,20 @@ const config: HardhatUserConfig = {
     tests: './tests',
   },
 
+  networks: {
+    hardhat: {
+      accounts:
+        process.env.PRIVATE_KEY_STG != null
+          ? [
+              {
+                privateKey: process.env.PRIVATE_KEY_STG,
+                balance: '500000000000000000000',
+              },
+            ]
+          : {},
+    },
+  },
+
   typechain: {
     outDir: './dist/contracts',
     target: 'ethers-v5',

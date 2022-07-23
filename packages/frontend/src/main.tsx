@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   WagmiConfig,
@@ -7,14 +6,12 @@ import {
   useNetwork,
   useAccount,
   chain,
+  useConnect,
 } from 'wagmi';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { getDefaultProvider } from 'ethers';
 
-import { WbydoProfileNft__factory } from '@wbydo/profile-nft-contracts/';
-
-import { useConnect } from 'wagmi';
-
+import { Deploy, Info } from './components/organisms';
 import { Top } from './components/pages/Top';
 
 import './main.css';
@@ -30,63 +27,33 @@ const chains = [
   chain.goerli,
   // chain.polygon,
   chain.polygonMumbai,
+  chain.hardhat,
 ];
 
-const Connected = ({
-  status,
-  connect,
-  chain,
-}: {
-  status: {
-    connect: 'error' | 'success' | 'idle' | 'loading';
-    account: 'connecting' | 'disconnected' | 'connected' | 'reconnecting';
-  };
-  connect: ReturnType<typeof useConnect>['connect'];
-  chain: ReturnType<typeof useNetwork>['chain'];
-}) => {
-  if (status.connect === 'idle' || status.account === 'disconnected') {
-    return <button {...{ onClick: () => connect() }}>connect</button>;
-  }
-
-  if (chain?.unsupported) {
-    return <b>Wrong Network</b>;
-  }
-
-  return (
-    <>
-      connected: {{ error: '🚫', success: '✅', loading: '🔄' }[status.connect]}
-    </>
-  );
-};
-
-const App: FC = () => {
+const App = () => {
   const { connect, status: statusConnect } = useConnect({
     connector: new MetaMaskConnector({
       chains,
     }),
   });
   const { address, status: statusAccount } = useAccount();
-
   const { chain } = useNetwork();
+  const status = { account: statusAccount, connect: statusConnect };
 
   return (
     <>
       <h1>Deploy Tool</h1>
 
-      <h2>Info</h2>
-      <Connected
+      <Info
         {...{
-          status: { account: statusAccount, connect: statusConnect },
+          status,
           connect,
           chain,
+          address,
         }}
       />
 
-      <p>chain: {chain?.name}</p>
-      <p>chainId: {chain?.id}</p>
-      <p>supported: {chain == null ? '❓' : chain.unsupported ? '🚫' : '✅'}</p>
-
-      <hr />
+      <Deploy {...{ status, chain }} />
     </>
   );
 };
