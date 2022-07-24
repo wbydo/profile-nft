@@ -1,1 +1,1 @@
-# @wbydo-blockchain-project/contracts
+# @wbydo/profile-nft-contracts
