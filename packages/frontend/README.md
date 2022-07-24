@@ -1,1 +1,1 @@
-# template-spa
+# @wbydo/profile-nft-frontend
