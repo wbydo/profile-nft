@@ -4,14 +4,16 @@ import { useNetwork, useSigner } from 'wagmi';
 
 import { WbydoProfileNft__factory } from '@wbydo/profile-nft-contracts/';
 
-import { DeployButton as DeployButtonComponent } from './components/atoms';
+import {
+  DeployButton as DeployButtonComponent,
+  MintButton as MintButtonComponent,
+} from './components/atoms';
 import { Status } from './types';
 
-const useDeployButton = () => {
+const useDeployButton = (setContractAddress: (arg: string | null) => void) => {
   const { data: signer } = useSigner();
   const [baseUri, setBaseUri] = useState<string | null>(null);
   const [txHath, setTxHash] = useState<string | null>(null);
-  const [contractAddress, setContractAddress] = useState<string | null>(null);
 
   const deployHandler = useCallback(() => {
     (async () => {
@@ -32,20 +34,24 @@ const useDeployButton = () => {
       await contract.deployed();
       setContractAddress(contract.address);
     })().catch((e) => console.error(e));
-  }, [signer, baseUri]);
+  }, [signer, baseUri, setContractAddress]);
 
-  return { signer, txHath, contractAddress, setBaseUri, deployHandler };
+  return { signer, txHath, setBaseUri, deployHandler };
 };
 
 export const DeployButton = ({
   status,
   chain,
+  contractAddress,
+  setContractAddress,
 }: {
   status: Status;
   chain: ReturnType<typeof useNetwork>['chain'];
+  contractAddress: string | null;
+  setContractAddress: (arg: string | null) => void;
 }) => {
-  const { signer, txHath, contractAddress, setBaseUri, deployHandler } =
-    useDeployButton();
+  const { signer, txHath, setBaseUri, deployHandler } =
+    useDeployButton(setContractAddress);
   return (
     <DeployButtonComponent
       {...{
@@ -59,4 +65,29 @@ export const DeployButton = ({
       }}
     />
   );
+};
+
+export const MintButton = ({
+  contractAddress,
+  tokenId,
+}: {
+  contractAddress: string | null;
+  tokenId: number;
+}) => {
+  const { data: signer } = useSigner();
+  const [txHash, setTxHash] = useState<string | null>();
+
+  const mintHandler = React.useCallback(() => {
+    if (signer == null) return;
+    if (contractAddress == null) return;
+    const contract = new WbydoProfileNft__factory(signer).attach(
+      contractAddress
+    );
+    (async () => {
+      const receipt = await contract.mint(tokenId);
+      setTxHash(receipt.blockHash);
+    })().catch((e) => console.error(e));
+  }, [contractAddress, signer, tokenId]);
+
+  return <MintButtonComponent {...{ contractAddress, tokenId, mintHandler }} />;
 };

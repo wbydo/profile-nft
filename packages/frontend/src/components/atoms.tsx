@@ -2,6 +2,8 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 import { useNetwork, useConnect, useSigner } from 'wagmi';
 
+import { WbydoProfileNft__factory } from '@wbydo/profile-nft-contracts/';
+
 import { Status } from '../types';
 
 export const Section = ({
@@ -89,6 +91,26 @@ export const DeployButton = ({
         onChange={(e) => setBaseUri(e.target.value)}
       ></input>
       <button onClick={deployHandler}>deploy</button>
+    </>
+  );
+};
+
+export const MintButton = ({
+  contractAddress,
+  tokenId,
+  mintHandler,
+}: {
+  contractAddress: string | null;
+  tokenId: number;
+  mintHandler: () => void;
+}) => {
+  if (contractAddress == null) {
+    return <></>;
+  }
+
+  return (
+    <>
+      <button onClick={mintHandler}>Mint ID: {tokenId}</button>
     </>
   );
 };

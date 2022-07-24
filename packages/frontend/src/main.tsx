@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   WagmiConfig,
@@ -11,7 +12,7 @@ import {
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { getDefaultProvider } from 'ethers';
 
-import { Deploy, Info } from './components/organisms';
+import { Deploy, Info, Mint } from './components/organisms';
 import { Top } from './components/pages/Top';
 
 import './main.css';
@@ -38,6 +39,8 @@ const App = () => {
   });
   const { address, status: statusAccount } = useAccount();
   const { chain } = useNetwork();
+  const [contractAddress, setContractAddress] = useState<string | null>(null);
+
   const status = { account: statusAccount, connect: statusConnect };
 
   return (
@@ -53,7 +56,9 @@ const App = () => {
         }}
       />
 
-      <Deploy {...{ status, chain }} />
+      <Deploy {...{ status, chain, contractAddress, setContractAddress }} />
+
+      <Mint {...{ contractAddress }} />
     </>
   );
 };
