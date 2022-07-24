@@ -12,7 +12,7 @@ import {
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { getDefaultProvider } from 'ethers';
 
-import { Deploy, Info, Mint } from './components/organisms';
+import { Deploy, Info, Mint, Faucet } from './components/organisms';
 import { Top } from './components/pages/Top';
 
 import './main.css';
@@ -24,7 +24,7 @@ const client = createClient({
 
 const chains = [
   // chain.mainnet,
-  chain.rinkeby,
+  // chain.rinkeby,
   chain.goerli,
   // chain.polygon,
   chain.polygonMumbai,
@@ -59,6 +59,11 @@ const App = () => {
       <Deploy {...{ status, chain, contractAddress, setContractAddress }} />
 
       <Mint {...{ contractAddress }} />
+      <hr />
+
+      <footer>
+        <Faucet />
+      </footer>
     </>
   );
 };
