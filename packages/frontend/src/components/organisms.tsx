@@ -70,3 +70,20 @@ export const Mint = ({
     </Section>
   );
 };
+
+export const Faucet = () => {
+  return (
+    <Section {...{ title: 'Faucet' }}>
+      <ul>
+        <li>
+          goerli:{' '}
+          <a href="https://goerlifaucet.com/">https://goerlifaucet.com/</a>
+        </li>
+        <li>
+          mumbai:{' '}
+          <a href="https://mumbaifaucet.com/">https://mumbaifaucet.com/</a>
+        </li>
+      </ul>
+    </Section>
+  );
+};
