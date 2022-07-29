@@ -13,7 +13,6 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { getDefaultProvider } from 'ethers';
 
 import { Deploy, Info, Mint, Faucet } from './components/organisms';
-import { Top } from './components/pages/Top';
 
 import './main.css';
 
