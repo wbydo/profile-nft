@@ -8,6 +8,6 @@
     "skipLibCheck": true
   },
   "include": ["./scripts", "./types", "./tests"],
-  "exclude": ["node_modules"],
+  "exclude": ["**/*.test.ts"],
   "files": ["./hardhat.config.ts"]
 }

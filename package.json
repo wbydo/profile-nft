@@ -9,7 +9,9 @@
     "test": "lerna run test --scope=@wbydo/profile-nft-contracts",
     "node": "lerna run node --scope=@wbydo/profile-nft-contracts --stream",
     "dev": "lerna run dev --stream --parallel",
-    "storybook": "lerna run storybook --scope=@wbydo/profile-nft-frontend --stream"
+    "storybook": "lerna run storybook --scope=@wbydo/profile-nft-frontend --stream",
+    "build": "lerna clean -y && lerna bootstrap && lerna run build --scope=@wbydo/profile-nft-frontend --stream",
+    "serve": "lerna run serve --scope=@wbydo/profile-nft-frontend --stream"
   },
   "devDependencies": {
     "lerna": "^5.1.8",
