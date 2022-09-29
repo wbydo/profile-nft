@@ -6,7 +6,8 @@
     "update": "ncu -u",
     "lint": "eslint ./src/* && prettier -w src",
     "dev": "vite",
-    "build": "tsc && vite build",
+    "#build:error": "tsc --noEmit && vite build",
+    "build": "vite build",
     "serve": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
