@@ -3,7 +3,7 @@
   "version": "2.0.0-alpha",
   "main": "./dist/contracts/index.ts",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "hardhat": "^2.10.1"
   },
   "scripts": {
